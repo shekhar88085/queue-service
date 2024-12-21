@@ -1,56 +1,65 @@
 package com.example;
 
 public class Message {
-  /** How many times this message has been delivered. */
-  private int attempts;
+    private final String body;
+    private final int priority;
+    private final long timestamp;
+    private String receiptId;
+    private int attempts;
+    private long visibleFrom;
 
-  /** Visible from time */
-  private long visibleFrom;
+    // Existing constructor
+    public Message(String body, int priority, long timestamp) {
+        this.body = body;
+        this.priority = priority;
+        this.timestamp = timestamp;
+        this.attempts = 0;
+        this.visibleFrom = 0;
+    }
 
-  /** An identifier associated with the act of receiving the message. */
-  private String receiptId;
+    // New constructor for body and receiptId
+    public Message(String body, String receiptId) {
+        this.body = body;
+        this.priority = 0; // Default priority if not provided
+        this.timestamp = System.currentTimeMillis(); // Default to current time
+        this.receiptId = receiptId;
+        this.attempts = 0;
+        this.visibleFrom = 0;
+    }
 
-  private String msgBody;
+    public String getBody() {
+        return body;
+    }
 
-  Message(String msgBody) {
-    this.msgBody = msgBody;
-  }
+    public int getPriority() {
+        return priority;
+    }
 
-  Message(String msgBody, String receiptId) {
-    this.msgBody = msgBody;
-    this.receiptId = receiptId;
-  }
+    public long getTimestamp() {
+        return timestamp;
+    }
 
-  public String getReceiptId() {
-    return this.receiptId;
-  }
+    public String getReceiptId() {
+        return receiptId;
+    }
 
-  protected void setReceiptId(String receiptId) {
-    this.receiptId = receiptId;
-  }
+    protected int getAttempts() {
+      return attempts;
+    }
 
-  protected void setVisibleFrom(long visibleFrom) {
-    this.visibleFrom = visibleFrom;
-  }
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
+    }
 
-  /*
-  public boolean isVisible() {
-  	return visibleFrom < System.currentTimeMillis();
-  }*/
+    public void incrementAttempts() {
+        this.attempts++;
+    }
 
-  public boolean isVisibleAt(long instant) {
-    return visibleFrom < instant;
-  }
+    public void setVisibleFrom(long visibleFrom) {
+        this.visibleFrom = visibleFrom;
+    }
 
-  public String getBody() {
-    return msgBody;
-  }
-
-  protected int getAttempts() {
-    return attempts;
-  }
-
-  protected void incrementAttempts() {
-    this.attempts++;
-  }
+    public boolean isVisibleAt(long now) {
+        return now >= visibleFrom;
+    }
 }

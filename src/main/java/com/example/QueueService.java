@@ -1,12 +1,28 @@
 package com.example;
 
 public interface QueueService {
-  /** push a message onto a queue. */
-  public void push(String queueUrl, String messageBody);
+    /**
+     * Push a message onto a queue with a specified priority.
+     *
+     * @param queueUrl    the URL of the queue
+     * @param messageBody the body of the message
+     * @param priority    the priority of the message
+     */
+    public void push(String queueUrl, String messageBody, int priority);
 
-  /** retrieves a single message from a queue. */
-  public Message pull(String queueUrl);
+    /**
+     * Retrieves a single message from a queue.
+     *
+     * @param queueUrl the URL of the queue
+     * @return the retrieved message
+     */
+    public Message pull(String queueUrl);
 
-  /** deletes a message from the queue that was received by pull(). */
-  public void delete(String queueUrl, String receiptId);
+    /**
+     * Deletes a message from the queue that was received by pull().
+     *
+     * @param queueUrl  the URL of the queue
+     * @param receiptId the receipt ID of the message
+     */
+    public void delete(String queueUrl, String receiptId);
 }
